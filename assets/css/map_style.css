@@ -1,0 +1,226 @@
+:root {
+    --bg-color: #ffffff;
+    --text-primary: #333333;
+    --text-inverse: #ffffff;
+    
+    /* Strict screenshot colors */
+    --color-black: #000000;
+    --color-red: #c00000;    /* Dark red from screenshot */
+    --color-blue: #0070c0;   /* Rich blue from screenshot */
+    --color-green: #00b050;  /* vibrant green from screenshot */
+    
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 20px -5px rgb(0 0 0 / 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Layout - MAP LEFT, LIST RIGHT exactly like screenshot */
+.app-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* Map Container */
+.map-container {
+    flex: 7; /* Uses 70% of width */
+    position: relative;
+    background: white; /* No tiles, just white bg */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent !important;
+}
+
+/* Tooltip for map markers */
+.custom-tooltip {
+    position: absolute;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: var(--shadow-lg);
+    padding: 12px;
+    pointer-events: none;
+    z-index: 2000;
+    max-width: 300px;
+    transition: opacity 0.2s ease;
+}
+.popup-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Style the state boundaries */
+.state-boundary {
+    fill: #fdfdfd; /* nearly white for empty states to increase contrast with borders */
+    stroke: #9ca3af; /* darker grey border for higher contrast */
+    stroke-width: 1px;
+    transition: fill 0.2s;
+}
+.state-boundary:hover {
+    fill: #fef08a; /* a bit more yellow on hover */
+}
+.state-boundary.has-plants {
+    fill: #fef9c3; /* Very soft yellow color to highlight states with plants */
+}
+.state-boundary.has-plants:hover {
+    fill: #fef08a; /* Slightly darker yellow on hover */
+}
+
+/* Outer line shade */
+.india-outline {
+    fill: transparent;
+    stroke: transparent;
+    filter: drop-shadow(10px 15px 15px rgba(0,0,0,0.4));
+}
+
+/* Sidebar */
+.sidebar {
+    flex: 3; /* Uses 30% of width */
+    background: white;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    padding-left: 20px;
+    /* In the screenshot there's no border on the left, just clean white */
+}
+
+.sidebar-header {
+    padding: 24px 24px 12px 0;
+    background: white;
+    text-align: center;
+}
+
+.main-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: inline-block;
+    letter-spacing: 1px;
+}
+
+.title-divider {
+    border: 0;
+    height: 1px;
+    background: #e2e8f0;
+    margin-top: 10px;
+}
+
+/* Sidebar Content (Scrollable List) */
+.sidebar-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 24px 24px 0;
+}
+
+/* Scrollbar Styling */
+.sidebar-content::-webkit-scrollbar {
+    width: 6px;
+}
+.sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.sidebar-content::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+}
+
+/* Category Headers in List */
+.category-heading {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 24px 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0px;
+}
+
+/* Plant List Item */
+.plant-item {
+    padding: 10px 16px;
+    margin-bottom: 8px;
+    color: var(--text-inverse);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+/* Exact coloring for list items based on screenshot */
+.plant-item.bg-black { background-color: var(--color-black); }
+.plant-item.bg-red { background-color: var(--color-red); }
+.plant-item.bg-blue { background-color: var(--color-blue); }
+.plant-item.bg-green { background-color: var(--color-green); }
+
+.plant-item:hover {
+    opacity: 0.9;
+    transform: translateX(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.plant-item.active {
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5), var(--shadow-lg);
+    font-weight: 600;
+}
+
+/* Remove leaflet popups */
+
+/* Custom Numbered Pins */
+.numbered-pin {
+    cursor: pointer;
+    filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.6)); /* slightly stronger shadow for pins */
+}
+
+.pin-svg {
+    transition: transform 0.15s ease-out;
+    transform-origin: 50% 100%; /* Anchor scaling to the bottom tip */
+}
+
+.numbered-pin:hover .pin-svg, .numbered-pin.active-marker .pin-svg {
+    transform: scale(1.3) translateY(-4px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .app-container {
+        flex-direction: column;
+    }
+    .map-container {
+        height: 50vh;
+        order: 1;
+    }
+    .sidebar {
+        height: 50vh;
+        order: 2;
+        padding-left: 0;
+        border-top: 1px solid #e2e8f0;
+    }
+    .sidebar-header {
+        padding-left: 20px;
+    }
+    .sidebar-content {
+        padding-left: 20px;
+    }
+}
