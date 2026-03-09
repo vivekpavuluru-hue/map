@@ -67,6 +67,56 @@ function createNumberedIconSVG(num, colorKey) {
     `;
 }
 
+function getMarkerOffsets() {
+    return [
+        [0, 0], [0, -18], [16, -10], [-16, -10], [18, 8], [-18, 8], [0, 18],
+        [26, -16], [-26, -16], [26, 16], [-26, 16], [0, -30], [0, 30],
+        [34, 0], [-34, 0], [24, -28], [-24, -28], [24, 28], [-24, 28]
+    ];
+}
+
+function getMarkerLayout(allPlants, projection) {
+    const minDistance = 24;
+    const offsets = getMarkerOffsets();
+    const placed = [];
+
+    return allPlants
+        .map(plant => {
+            const projected = projection([plant.coords[1], plant.coords[0]]);
+            return { ...plant, baseX: projected[0], baseY: projected[1] };
+        })
+        .sort((a, b) => a.baseY - b.baseY || a.baseX - b.baseX)
+        .map(plant => {
+            let chosenOffset = offsets[0];
+
+            for (const offset of offsets) {
+                const candidateX = plant.baseX + offset[0];
+                const candidateY = plant.baseY + offset[1];
+
+                const collides = placed.some(p => {
+                    const dx = p.x - candidateX;
+                    const dy = p.y - candidateY;
+                    return Math.hypot(dx, dy) < minDistance;
+                });
+
+                if (!collides) {
+                    chosenOffset = offset;
+                    break;
+                }
+            }
+
+            const marker = {
+                ...plant,
+                x: plant.baseX + chosenOffset[0],
+                y: plant.baseY + chosenOffset[1],
+                isOffset: chosenOffset[0] !== 0 || chosenOffset[1] !== 0
+            };
+
+            placed.push(marker);
+            return marker;
+        });
+}
+
 // State
 let markers = {};
 
@@ -170,15 +220,26 @@ function initMap() {
                 .attr('class', 'custom-tooltip')
                 .style('opacity', 0);
 
+            const markerLayout = getMarkerLayout(allPlants, projection);
+
+            // Draw connector lines for offset pins
+            svg.selectAll('.pin-connector')
+                .data(markerLayout.filter(d => d.isOffset))
+                .enter().append('line')
+                .attr('class', 'pin-connector')
+                .attr('x1', d => d.baseX)
+                .attr('y1', d => d.baseY)
+                .attr('x2', d => d.x)
+                .attr('y2', d => d.y);
+
             // Draw markers
             const pins = svg.selectAll('.numbered-pin')
-                .data(allPlants)
+                .data(markerLayout)
                 .enter().append('g')
                 .attr('class', 'numbered-pin')
                 .attr('id', d => `pin-${d.id}`)
                 .attr('transform', d => {
-                    const p = projection([d.coords[1], d.coords[0]]);
-                    return `translate(${p[0] - 12}, ${p[1] - 32})`;
+                    return `translate(${d.x - 12}, ${d.y - 32})`;
                 })
                 .html(d => createNumberedIconSVG(d.num, d.color))
                 .style('cursor', 'pointer');

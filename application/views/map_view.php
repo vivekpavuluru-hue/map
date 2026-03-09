@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/map_style.css?v=13'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/map_style.css?v=14'); ?>">
 </head>
 <body>
 
@@ -47,6 +47,6 @@
     </script>
     
     <!-- Custom JS -->
-    <script src="<?php echo base_url('assets/js/map_script.js?v=13'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/map_script.js?v=14'); ?>"></script>
 </body>
 </html>
