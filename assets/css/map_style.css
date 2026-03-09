@@ -2,13 +2,16 @@
     --bg-color: #ffffff;
     --text-primary: #333333;
     --text-inverse: #ffffff;
-    
+
     /* Strict screenshot colors */
     --color-black: #000000;
-    --color-red: #c00000;    /* Dark red from screenshot */
-    --color-blue: #0070c0;   /* Rich blue from screenshot */
-    --color-green: #00b050;  /* vibrant green from screenshot */
-    
+    --color-red: #c00000;
+    /* Dark red from screenshot */
+    --color-blue: #0070c0;
+    /* Rich blue from screenshot */
+    --color-green: #00b050;
+    /* vibrant green from screenshot */
+
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 10px 20px -5px rgb(0 0 0 / 0.3);
@@ -37,9 +40,11 @@ body {
 
 /* Map Container */
 .map-container {
-    flex: 7; /* Uses 70% of width */
+    flex: 7;
+    /* Uses 70% of width */
     position: relative;
-    background: white; /* No tiles, just white bg */
+    background: white;
+    /* No tiles, just white bg */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,6 +69,7 @@ body {
     max-width: 300px;
     transition: opacity 0.2s ease;
 }
+
 .popup-title {
     font-family: 'Inter', sans-serif;
     font-weight: 700;
@@ -74,31 +80,40 @@ body {
 
 /* Style the state boundaries */
 .state-boundary {
-    fill: #fdfdfd; /* nearly white for empty states to increase contrast with borders */
-    stroke: #9ca3af; /* darker grey border for higher contrast */
+    fill: #fdfdfd;
+    /* nearly white for empty states to increase contrast with borders */
+    stroke: #9ca3af;
+    /* darker grey border for higher contrast */
     stroke-width: 1px;
     transition: fill 0.2s;
 }
+
 .state-boundary:hover {
-    fill: #fef08a; /* a bit more yellow on hover */
+    fill: #fef08a;
+    /* a bit more yellow on hover */
 }
+
 .state-boundary.has-plants {
-    fill: #fef9c3; /* Very soft yellow color to highlight states with plants */
+    fill: #fef9c3;
+    /* Very soft yellow color to highlight states with plants */
 }
+
 .state-boundary.has-plants:hover {
-    fill: #fef08a; /* Slightly darker yellow on hover */
+    fill: #fef08a;
+    /* Slightly darker yellow on hover */
 }
 
 /* Outer line shade */
 .india-outline {
     fill: transparent;
     stroke: transparent;
-    filter: drop-shadow(10px 15px 15px rgba(0,0,0,0.4));
+    filter: drop-shadow(10px 15px 15px rgba(0, 0, 0, 0.4));
 }
 
 /* Sidebar */
 .sidebar {
-    flex: 3; /* Uses 30% of width */
+    flex: 3;
+    /* Uses 30% of width */
     background: white;
     z-index: 1000;
     display: flex;
@@ -139,9 +154,11 @@ body {
 .sidebar-content::-webkit-scrollbar {
     width: 6px;
 }
+
 .sidebar-content::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .sidebar-content::-webkit-scrollbar-thumb {
     background: #cbd5e1;
 }
@@ -169,10 +186,21 @@ body {
 }
 
 /* Exact coloring for list items based on screenshot */
-.plant-item.bg-black { background-color: var(--color-black); }
-.plant-item.bg-red { background-color: var(--color-red); }
-.plant-item.bg-blue { background-color: var(--color-blue); }
-.plant-item.bg-green { background-color: var(--color-green); }
+.plant-item.bg-black {
+    background-color: var(--color-black);
+}
+
+.plant-item.bg-red {
+    background-color: var(--color-red);
+}
+
+.plant-item.bg-blue {
+    background-color: var(--color-blue);
+}
+
+.plant-item.bg-green {
+    background-color: var(--color-green);
+}
 
 .plant-item:hover {
     opacity: 0.9;
@@ -190,15 +218,18 @@ body {
 /* Custom Numbered Pins */
 .numbered-pin {
     cursor: pointer;
-    filter: drop-shadow(0px 3px 3px rgba(0,0,0,0.6)); /* slightly stronger shadow for pins */
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.6));
+    /* slightly stronger shadow for pins */
 }
 
 .pin-svg {
     transition: transform 0.15s ease-out;
-    transform-origin: 50% 100%; /* Anchor scaling to the bottom tip */
+    transform-origin: 50% 100%;
+    /* Anchor scaling to the bottom tip */
 }
 
-.numbered-pin:hover .pin-svg, .numbered-pin.active-marker .pin-svg {
+.numbered-pin:hover .pin-svg,
+.numbered-pin.active-marker .pin-svg {
     transform: scale(1.3) translateY(-4px);
 }
 
@@ -207,20 +238,42 @@ body {
     .app-container {
         flex-direction: column;
     }
+
     .map-container {
         height: 50vh;
         order: 1;
     }
+
     .sidebar {
         height: 50vh;
         order: 2;
         padding-left: 0;
         border-top: 1px solid #e2e8f0;
     }
+
     .sidebar-header {
         padding-left: 20px;
     }
+
     .sidebar-content {
         padding-left: 20px;
     }
+}
+
+.pin-svg {
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.3));
+    pointer-events: visiblePainted;
+}
+
+.pin-svg text {
+    font-family: 'Arial', sans-serif;
+    user-select: none;
+}
+
+
+.numbered-pin:hover .pin-svg {
+    stroke: #ffea00;
+    /* Yellow highlight on hover */
+    stroke-width: 2px;
+    z-index: 999;
 }
